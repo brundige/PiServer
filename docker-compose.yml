@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  piserver:
+    build: .
+    image: piserver:latest
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - PORT=3000
+    # No volume mount to keep image-installed dependencies intact
+    # To enable live code changes during development, you can add a bind mount:
+    # volumes:
+    #   - ./:/usr/src/app
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
